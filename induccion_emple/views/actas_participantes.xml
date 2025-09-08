@@ -1,0 +1,144 @@
+<odoo>
+    <data>
+        <!-- Acción del reporte individual por participante -->
+        <record id="action_report_acta_participante" model="ir.actions.report">
+            <field name="name">Acta de Participante</field>
+            <field name="model">induccion.linea.empleado</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">induccion_emple.report_acta_participante_template</field>
+            <field name="report_file">induccion_emple.report_acta_participante_template</field>
+            <field name="print_report_name">'Acta_' + (object.control_numero or 'N/A')</field>
+        </record>
+
+        <!-- Plantilla QWeb del reporte de participante -->
+        <template id="report_acta_participante_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="linea">
+                    <t t-set="company" t-value="user.company_id"/>
+                    <t t-call="web.external_layout_standard">
+                        <div class="page">
+
+                            <!-- Membrete institucional -->
+                            <table style="width:100%; margin-bottom:20px; border:none;">
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <div style="margin-bottom:10px;">
+                                            <img t-att-src="'/web/image/res.company/%s/logo' % company.id" style="max-height:80px;"/>
+                                        </div>
+                                        <h2 style="margin:0;"><span t-field="company.name"/></h2>
+                                        <p style="margin:0; font-size:12px; line-height:1.4;">
+                                            <span t-field="company.street"/>
+                                            <t t-if="company.street2">, <span t-field="company.street2"/></t><br/>
+                                            <span t-field="company.city"/>, <span t-field="company.state_id.name"/> - <span t-field="company.zip"/><br/>
+                                            <t t-if="company.vat">RIF: <span t-field="company.vat"/> |</t>
+                                            Tel: <span t-field="company.phone"/> |
+                                            Email: <span t-field="company.email"/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Título principal -->
+                            <h2 style="text-align:center;">ACTA DE PARTICIPANTE</h2>
+
+                            <!-- Datos generales del participante -->
+                            <table class="table table-sm info-table" style="width:100%; margin-bottom:20px;">
+                                <tr>
+                                    <th style="width:15%;">N° Control:</th>
+                                    <td style="width:25%;"><span t-field="linea.control_numero"/></td>
+                                    <th style="width:15%;">Empleado:</th>
+                                    <td style="width:25%;"><span t-field="linea.empleado_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Cargo:</th>
+                                    <td><t t-esc="linea.empleado_id.job_id and linea.empleado_id.job_id.name or ''"/></td>
+                                    <th>Departamento:</th>
+                                    <td><t t-esc="linea.empleado_id.department_id and linea.empleado_id.department_id.name or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Teléfono:</th>
+                                    <td><t t-esc="linea.empleado_id.phone or ''"/></td>
+                                    <th>Correo:</th>
+                                    <td><t t-esc="linea.empleado_id.work_email or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Documento de Identidad:</th>
+                                    <td colspan="3"><t t-esc="linea.empleado_id.identification_id or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Inducción:</th>
+                                    <td><span t-field="linea.induccion_id.nombre"/></td>
+                                    <th>Fecha de Inducción:</th>
+                                    <td><span t-field="linea.induccion_id.fecha"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Estatus:</th>
+                                    <td><span t-field="linea.estatus"/></td>
+                                    <th>Asistió:</th>
+                                    <td><t t-esc="linea.asistio and 'Sí' or 'No'"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Observación:</th>
+                                    <td colspan="3"><span t-field="linea.observacion"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha de Ejecución del Acta:</th>
+                                    <td colspan="3">
+                                        <t t-esc="linea.fecha_ejecucion and linea.fecha_ejecucion.strftime('%d/%m/%Y %H:%M:%S') or 'No Generada'"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Datos del capacitador -->
+                            <h3>Datos del Capacitador</h3>
+                            <table class="table table-sm info-table" style="width:100%; margin-bottom:20px;">
+                                <tr>
+                                    <th style="width:20%;">Nombre:</th>
+                                    <td style="width:30%;"><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.display_name or 'No asignado'"/></td>
+                                    <th style="width:20%;">Cargo:</th>
+                                    <td style="width:30%;"><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.cargo or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Departamento/Sucursal:</th>
+                                    <td><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.sucursal or ''"/></td>
+                                    <th>Teléfono:</th>
+                                    <td><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.phone or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Correo:</th>
+                                    <td><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.email or ''"/></td>
+                                    <th>Empresa Externa:</th>
+                                    <td><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.empresa_externa or ''"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Documento de Identidad:</th>
+                                    <td colspan="3"><t t-esc="linea.induccion_id.capacitador_id and linea.induccion_id.capacitador_id.cedula or ''"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Items de Inducción -->
+                            <h3>Items de Inducción</h3>
+                            <table class="table table-sm" style="width:100%; margin-top:10px;">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="linea.item_ids" t-as="item">
+                                        <tr>
+                                            <td><span t-field="item.item_id.name"/></td>
+                                            <td><span t-field="item.estatus"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
