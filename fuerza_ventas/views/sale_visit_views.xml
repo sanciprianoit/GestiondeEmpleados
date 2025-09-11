@@ -1,0 +1,109 @@
+<odoo>
+    <!-- Vista Search con filtros decorativos -->
+    <record id="fuerza_ventas.view_sale_visit_search" model="ir.ui.view">
+        <field name="name">sale.visit.search</field>
+        <field name="model">sale.visit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="salesperson_id"/>
+                <field name="partner_id"/>
+                <field name="visit_date"/>
+                <field name="status"/>
+       <group expand="0" string="Acciones">
+    <filter string="🧭 Por Visitar" name="to_visit" domain="[('status','=','to_visit')]" icon="fa-binoculars"/>
+    <filter string="📍 No Visitado" name="not_visited" domain="[('status','=','not_visited')]" icon="fa-map-marker-alt"/>
+    <filter string="👥 Visitando" name="visiting" domain="[('status','=','visiting')]" icon="fa-users"/>
+    <filter string="🏁 Efectiva" name="effective" domain="[('status','=','effective')]" icon="fa-flag-checkered"/>
+    <filter string="🚫 No Efectiva" name="not_effective" domain="[('status','=','not_effective')]" icon="fa-thumbs-down"/>
+</group>
+
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista List -->
+    <record id="fuerza_ventas.view_sale_visit_list" model="ir.ui.view">
+        <field name="name">sale.visit.list</field>
+        <field name="model">sale.visit</field>
+        <field name="arch" type="xml">
+            <list>
+             <field name="priority_level" widget="priority"/>
+                <field name="name"/>
+                <field name="salesperson_id" widget="many2one_avatar"/>
+                <field name="partner_id"/>
+                <field name="branch_id"/>
+                <field name="visit_type"/>
+                <field name="visit_date"/>
+                <field name="repeat"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Form -->
+    <record id="fuerza_ventas.view_sale_visit_form_main" model="ir.ui.view">
+    <field name="name">sale.visit.form.main</field>
+    <field name="model">sale.visit</field>
+    <field name="arch" type="xml">
+        <form string="Detalle de Visita">
+            <sheet>
+                <group>
+                    <group string="🧾 Básico">
+                        <field name="name"/>
+                        <field name="salesperson_id" widget="many2one_avatar"/>
+                        <field name="visit_type"/>
+                        <field name="visit_date"/>
+                        <field name="priority_level" widget="priority"/>
+                        <field name="status"/>
+                    </group>
+
+                    <group string="👤 Cliente">
+                        <field name="partner_id"/>
+                        <field name="branch_id"/>
+                    </group>
+
+                    <group string="🔁 Frecuencia">
+                        <field name="repeat"/>
+                        <field name="frequency"/>
+                        <field name="repeat_from"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+    <!-- Vista Kanban -->
+    <record id="fuerza_ventas.view_sale_visit_kanban" model="ir.ui.view">
+        <field name="name">sale.visit.kanban</field>
+        <field name="model">sale.visit</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div><strong>Prioridad:</strong> <field name="priority_level" widget="priority"/></div>
+                            <div><strong>Etiqueta:</strong> <field name="name"/></div>
+                            <div><strong>Vendedor:</strong> <field name="salesperson_id" widget="many2one_avatar" options="{'no_open': True}"/></div>
+                            <div><strong>Cliente:</strong> <field name="partner_id"/></div>
+                            <div><strong>Fecha:</strong> <field name="visit_date"/></div>
+                            <div><strong>Estatus:</strong> <field name="status"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción principal -->
+    <record id="fuerza_ventas.action_sale_visit" model="ir.actions.act_window">
+        <field name="name">Visitas</field>
+        <field name="res_model">sale.visit</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="view_id" ref="fuerza_ventas.view_sale_visit_list"/>
+        <field name="search_view_id" ref="fuerza_ventas.view_sale_visit_search"/>
+    </record>
+</odoo>

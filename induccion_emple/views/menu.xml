@@ -1,6 +1,10 @@
 <odoo>
-    <!-- Menú principal: Inducciones -->
-    <menuitem id="menu_induccion_root" name="Inducciones" sequence="10"/>
+    <!-- Menú principal: Inducciones con ícono SVG -->
+    <menuitem 
+        id="menu_induccion_root" 
+        name="Inducciones" 
+        sequence="10"
+        web_icon="induccion_emple,static/description/icon.png"/>
 
     <!-- Capacitadores/Instructores -->
     <menuitem 
@@ -74,7 +78,7 @@
         action="action_acta_induccion" 
         sequence="10"/>
 
-         <menuitem
+    <menuitem
         id="menu_acta_capacitacion"
         name="Acta de Capacitación"
         parent="menu_generar_acta_induccion"

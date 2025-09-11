@@ -1,0 +1,26 @@
+<odoo>
+    <!-- Acción: lista, formulario y kanban de visitas individuales -->
+    <record id="fuerza_ventas.action_sale_visit" model="ir.actions.act_window">
+        <field name="name">Visitas</field>
+        <field name="res_model">sale.visit</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="view_id" ref="fuerza_ventas.view_sale_visit_list"/>
+        <field name="search_view_id" ref="fuerza_ventas.view_sale_visit_search"/>
+    </record>
+
+
+    <!-- Menú raíz -->
+    <menuitem id="fuerza_ventas.menu_sale_visit_root"
+              name="Fuerza de Ventas"
+              sequence="10"
+              web_icon="fuerza_ventas,static/description/icon.png"/>
+
+    <!-- Submenú: visitas individuales -->
+    <menuitem id="fuerza_ventas.menu_sale_visit"
+              name="Visitas"
+              parent="fuerza_ventas.menu_sale_visit_root"
+              action="fuerza_ventas.action_sale_visit"
+              sequence="10"/>
+
+    
+</odoo>

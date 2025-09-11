@@ -9,10 +9,16 @@ class TipoInduccion(models.Model):
     descripcion = fields.Text(string='Descripción')
     activo = fields.Boolean(string='Activo', default=True)
 
-    tipo_registro = fields.Selection([
-        ('induccion', 'Inducción'),
-        ('reinduccion', 'Reinducción')
-    ], string='Tipo de Registro', required=True, help='Clasificación del tipo de inducción.')
+    # ✅ Solo tendrá la opción "Inducción"
+    tipo_registro = fields.Selection(
+        [
+            ('induccion', 'Inducción'),
+        ],
+        string='Tipo de Registro',
+        required=True,
+        default='induccion',
+        help='Clasificación del tipo de inducción.'
+    )
 
     item_ids = fields.One2many(
         'induccion.item', 

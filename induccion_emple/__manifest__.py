@@ -43,6 +43,5 @@
     'auto_install': False,
     'license': 'AGPL-3',
 
-    # 👇 aquí va el hook para agregar siempre al admin a tus grupos
-    'post_init_hook': 'post_init_hook',
+   
 }
